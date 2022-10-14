@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: #e4e4e4;
+        display: flex;
+        /* flex-direction: column; */
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .rippleBtn {
+        position: relative;
+        font: 600 22px 'Poppins';
+        width: 180px;
+        height: 60px;
+        border: none;
+        border-radius: 36px;
+        margin: 20px 20px;
+        overflow: hidden;
+        letter-spacing: 1px;
+        color: #fff;
+      }
+
+      .rippleBtn:nth-child(1) {
+        background: linear-gradient(#000000, rgb(48, 48, 48));
+      }
+
+      .rippleBtn:nth-child(2) {
+        background: linear-gradient(rgb(48, 48, 48), #000000);
+      }
+
+      .ripple {
+        position: absolute;
+        display: block;
+        background: #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: ripple 1s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes ripple {
+        from {
+          width: 0;
+          height: 0;
+          opacity: 0.2;
+        }
+
+        to {
+          width: 500px;
+          height: 500px;
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="rippleBtn">Hover me</button>
+    <button class="rippleBtn">Hover me</button>
+  </body>
+  <script>
+    let rippleBtns = document.getElementsByClassName('rippleBtn');
+    let btnGroups = Array.from(rippleBtns);
+
+    btnGroups.forEach(btn => {
+      btn.addEventListener('mouseenter', function (e) {
+        let ripple = document.createElement('span');
+        let left = e.clientX - e.target.offsetLeft;
+        let top = e.clientY - e.target.offsetTop;
+        ripple.style.left = left + 'px';
+        ripple.style.top = top + 'px';
+        ripple.className = 'ripple';
+        this.appendChild(ripple);
+
+        let t = setTimeout(() => {
+          ripple.remove();
+          clearTimeout(t);
+        }, 1000);
+      });
+    });
+  </script>
+</html>
